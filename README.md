@@ -29,15 +29,17 @@ This project is a Machine Learning pipeline designed to automate the loan eligib
 The system implements multiple classification algorithms to determine the most accurate model, performing comprehensive data preprocessing, feature scaling, and visualization of performance metrics.
 
 ## 📊 Features
-* **Automated Preprocessing:** Handles missing values and encodes categorical variables.
+* **Leak-Free Preprocessing:** A scikit-learn `Pipeline` + `ColumnTransformer` imputes missing values (median for numeric, most-frequent for categorical) and **One-Hot encodes** categories — all fitted inside cross-validation so no information leaks from test to train.
 * **Exploratory Data Analysis (EDA):** Visualizes class distribution and feature correlations.
-* **Multi-Model Comparison:** Trains and evaluates four distinct algorithms:
+* **Multi-Model Comparison:** Trains and evaluates five distinct algorithms:
     * K-Nearest Neighbors (KNN)
     * Logistic Regression
     * Decision Tree Classifier
     * Neural Network (MLPClassifier)
+    * Random Forest Classifier
 * **Adaptive Scaling:** Applies `MinMaxScaler` for distance-based algorithms (KNN) and `StandardScaler` for others.
-* **Performance Visualization:** Generates Confusion Matrices, ROC Curves, and Accuracy comparisons.
+* **Honest Evaluation:** Uses **5-fold Stratified Cross-Validation** (out-of-fold predictions) instead of a single split, and reports Accuracy, Precision, Recall, **F1** and **ROC AUC** against a majority-class baseline.
+* **Performance Visualization:** Generates Confusion Matrices, ROC Curves, and metric comparison charts.
 
 ## 🛠️ Tech Stack
 * **Language:** Python
@@ -88,20 +90,23 @@ The project relies on `Loan Approval Dataset.csv`.
 ## 🧠 Methodology
 
 ### 1. Data Preprocessing
-* **Missing Values:** Imputed using the `most_frequent` strategy.
-* **Encoding:** `LabelEncoder` is used to convert categorical text data into numerical format.
-* **Splitting:** Data is split 70% for training and 30% for testing using **stratified sampling** to maintain class balance.
+* **ID Removal:** `Loan_ID` is dropped — it is a unique identifier, not a predictive feature.
+* **Missing Values:** Numeric columns are imputed with the **median**; categorical columns with the **most-frequent** value.
+* **Encoding:** Categorical text is converted with **One-Hot Encoding** (avoids the false ordinal ordering that `LabelEncoder` would impose on unordered categories).
+* **Leakage Control:** All of the above live inside a `Pipeline` that is fitted *within* each cross-validation fold, so the test fold never influences preprocessing.
 
 ### 2. Model Training
-The system compares four models. Logic is applied to use specific scalers for specific models:
+The system compares five models, with model-specific scaling:
 * **KNN:** Uses `MinMaxScaler` (sensitive to data magnitude).
-* **Logistic Regression, Decision Tree, Neural Network:** Use `StandardScaler`.
+* **Logistic Regression, Decision Tree, Neural Network, Random Forest:** Use `StandardScaler`.
+
+Evaluation uses **5-fold Stratified Cross-Validation** with out-of-fold predictions, so every row is scored by a model that never trained on it — much more reliable than a single train/test split on a small (614-row) dataset.
 
 ### 3. Evaluation Metrics
-The models are ranked based on:
-* **Accuracy:** Overall correctness.
-* **Precision & Recall:** To understand False Positives vs False Negatives.
-* **ROC AUC Score:** To measure the model's ability to distinguish between classes.
+Because the classes are imbalanced (~69% Approved), the models are judged on more than accuracy:
+* **Accuracy:** Overall correctness — compared against a majority-class **baseline (~0.69)**.
+* **Precision, Recall & F1:** To balance False Positives vs False Negatives (crucial when approving risky loans is costly).
+* **ROC AUC Score:** The primary ranking metric — measures the model's ability to distinguish Approved from Rejected regardless of threshold.
 
 ## 📈 Results & Visualizations
 
@@ -111,9 +116,9 @@ Running the script automatically creates a **`figures/`** folder and saves every
 | --- | --- |
 | `01_class_distribution.png` | **Class Distribution** — checks for dataset imbalance. |
 | `02_correlation_heatmap.png` | **Correlation Heatmap** — identifies relationships between features. |
-| `03_model_accuracy.png` | **Model Accuracy Comparison** — accuracy of all four models side-by-side. |
-| `04_precision_recall.png` | **Precision vs Recall** — precision and recall for each model. |
-| `05_confusion_matrix_<model>.png` | **Confusion Matrices** — one per model (KNN, Logistic Regression, Decision Tree, Neural Network). |
+| `03_model_accuracy.png` | **Model Accuracy Comparison** — accuracy of all five models vs the majority-class baseline. |
+| `04_precision_recall.png` | **Precision / Recall / F1** — the three metrics for each model. |
+| `05_confusion_matrix_<model>.png` | **Confusion Matrices** — one per model (KNN, Logistic Regression, Decision Tree, Neural Network, Random Forest). |
 | `06_roc_curve.png` | **ROC Curve Comparison** — True Positive Rate vs False Positive Rate for all models. |
 
 > The `figures/` folder is created automatically on each run, so you don't need to make it manually.

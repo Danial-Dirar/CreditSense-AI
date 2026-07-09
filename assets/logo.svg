@@ -48,5 +48,5 @@
   <text x="228" y="106" font-family="Georgia, 'Times New Roman', serif" font-size="52" font-weight="700" fill="#F4ECD8">Credit<tspan fill="#F4ECD8">Sense</tspan><tspan fill="url(#goldText)"> AI</tspan></text>
   <line x1="230" y1="122" x2="470" y2="122" stroke="url(#gold)" stroke-width="1.5" opacity="0.6"/>
   <text x="230" y="150" font-family="Segoe UI, Helvetica, Arial, sans-serif" font-size="20" font-weight="400" fill="#B9C6D9">Machine-Learning Loan Approval Prediction</text>
-  <text x="231" y="180" font-family="Segoe UI, Helvetica, Arial, sans-serif" font-size="13.5" font-weight="500" letter-spacing="2.2" fill="#8A7A4E">KNN · LOGISTIC REGRESSION · DECISION TREE · NEURAL NET</text>
+  <text x="231" y="180" font-family="Segoe UI, Helvetica, Arial, sans-serif" font-size="13.5" font-weight="500" letter-spacing="2.2" fill="#8A7A4E">FIVE CROSS-VALIDATED CLASSIFIERS · RANKED BY ROC-AUC</text>
 </svg>

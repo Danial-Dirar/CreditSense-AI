@@ -1,16 +1,20 @@
 
 # importinggg
 import os
+import warnings
+
 import pandas as pd
 import numpy as np
 import seaborn as sns
 import matplotlib.pyplot as plt
 
-from sklearn.model_selection import train_test_split
-from sklearn.preprocessing import LabelEncoder, StandardScaler, MinMaxScaler
+from sklearn.model_selection import StratifiedKFold, cross_val_predict
+from sklearn.pipeline import Pipeline
+from sklearn.compose import ColumnTransformer
+from sklearn.preprocessing import StandardScaler, MinMaxScaler, OneHotEncoder
 from sklearn.impute import SimpleImputer
 from sklearn.metrics import (
-    accuracy_score, precision_score, recall_score,
+    accuracy_score, precision_score, recall_score, f1_score,
     confusion_matrix, roc_auc_score, roc_curve
 )
 
@@ -18,8 +22,9 @@ from sklearn.neighbors import KNeighborsClassifier
 from sklearn.linear_model import LogisticRegression
 from sklearn.tree import DecisionTreeClassifier
 from sklearn.neural_network import MLPClassifier
+from sklearn.ensemble import RandomForestClassifier
 
-
+warnings.filterwarnings("ignore")
 
 # Create a folder to save all generated figures
 FIGURES_DIR = "figures"
@@ -28,6 +33,11 @@ os.makedirs(FIGURES_DIR, exist_ok=True)
 
 # Step 1: Loading Dataset
 df = pd.read_csv("Loan Approval Dataset.csv")
+
+# Loan_ID is just a unique identifier (LP001002, ...), not a real feature,
+# so we drop it to keep it out of the models.
+df = df.drop(columns=["Loan_ID"])
+
 # plotting for checkk
 plt.figure(figsize=(6, 4))
 sns.countplot(x="loan_status", data=df, order=["N", "Y"])
@@ -40,127 +50,139 @@ plt.savefig(os.path.join(FIGURES_DIR, "01_class_distribution.png"), dpi=150)
 plt.show()
 
 
-# Step 2: Handling Missing Values
-if df.isnull().values.any():
-    imputer = SimpleImputer(strategy="most_frequent")
-    df_imputed = pd.DataFrame(imputer.fit_transform(df), columns=df.columns)
-else:
-    df_imputed=df
+# Step 2: Features / Target
+# Target: 1 = Approved (Y), 0 = Rejected (N)
+y = (df["loan_status"] == "Y").astype(int)
+X = df.drop(columns=["loan_status"])
+
+# Split columns by type so each gets the right preprocessing
+numeric_features = X.select_dtypes(include=["number"]).columns.tolist()
+categorical_features = X.select_dtypes(exclude=["number"]).columns.tolist()
 
 
-# Step 3: Categorical Variables Encoding
-label_encoders = {}
-for column in df_imputed.select_dtypes(include=['object']).columns:
-    le = LabelEncoder()
-    df_imputed[column] = le.fit_transform(df_imputed[column])
-    label_encoders[column] = le
-
-
-
-# Step 4: Plotting Correlation Heatmap
+# Step 3: Correlation Heatmap
+# For the heatmap we need everything numeric, so we encode categoricals just
+# for visualisation (this encoded frame is NOT used for training).
+df_encoded = df.copy()
+for col in categorical_features + ["loan_status"]:
+    df_encoded[col] = df_encoded[col].astype("category").cat.codes
 plt.figure(figsize=(12, 8))
-sns.heatmap(df_imputed.corr(), annot=True, cmap='coolwarm')
-plt.title('Feature Correlation Heatmap')
+sns.heatmap(df_encoded.corr(), annot=True, cmap="coolwarm")
+plt.title("Feature Correlation Heatmap")
 plt.tight_layout()
 plt.savefig(os.path.join(FIGURES_DIR, "02_correlation_heatmap.png"), dpi=150)
 plt.show()
 
 
+# Step 4: Preprocessing definition
+# - Numeric  : impute missing with the MEDIAN, then scale.
+# - Category : impute missing with the MOST FREQUENT value, then One-Hot encode.
+# One-Hot avoids the false "ordering" that LabelEncoder imposes on categories.
+def build_preprocessor(numeric_scaler):
+    return ColumnTransformer([
+        ("num", Pipeline([
+            ("impute", SimpleImputer(strategy="median")),
+            ("scale", numeric_scaler),
+        ]), numeric_features),
+        ("cat", Pipeline([
+            ("impute", SimpleImputer(strategy="most_frequent")),
+            ("onehot", OneHotEncoder(handle_unknown="ignore")),
+        ]), categorical_features),
+    ])
 
-# Step 5: Splitting Train-Test Split by 70/30 ratio
-X = df_imputed.drop("loan_status", axis=1)
-y = df_imputed["loan_status"]
-X_train_raw, X_test_raw, y_train, y_test = train_test_split(
-    X, y, test_size=0.3, stratify=y, random_state=42
-)
 
-
-
-# Step 6: Define Models
-
+# Step 5: Define Models
 models = {
     "KNN": KNeighborsClassifier(),
-    "Logistic Regression": LogisticRegression(),
-    "Decision Tree": DecisionTreeClassifier(),
-    "Neural Network": MLPClassifier(max_iter=1000)
+    "Logistic Regression": LogisticRegression(max_iter=1000),
+    "Decision Tree": DecisionTreeClassifier(max_depth=5, random_state=42),
+    "Neural Network": MLPClassifier(max_iter=1000, random_state=42),
+    "Random Forest": RandomForestClassifier(n_estimators=300, random_state=42),
 }
 
 
-
-# Step 7: Apply Scaling and Train Models
-
+# Step 6: Train & Evaluate with 5-fold Cross-Validation
+# Instead of one lucky train/test split, we use out-of-fold predictions so that
+# every row is predicted by a model that never saw it during training. This
+# gives far more stable, honest estimates on a small (614-row) dataset.
+cv = StratifiedKFold(n_splits=5, shuffle=True, random_state=42)
 results = {}
 
 for name, model in models.items():
-    if name == "KNN":
-        scaler = MinMaxScaler()
-    else:
-        scaler = StandardScaler()
+    # KNN is distance-based -> MinMax; the rest -> StandardScaler.
+    scaler = MinMaxScaler() if name == "KNN" else StandardScaler()
+    pipe = Pipeline([
+        ("preprocess", build_preprocessor(scaler)),
+        ("model", model),
+    ])
 
-    X_train = scaler.fit_transform(X_train_raw)
-    X_test = scaler.transform(X_test_raw)
+    # Out-of-fold probabilities, then threshold at 0.5 for the class prediction.
+    y_prob = cross_val_predict(pipe, X, y, cv=cv, method="predict_proba")[:, 1]
+    y_pred = (y_prob >= 0.5).astype(int)
 
-
-    model.fit(X_train, y_train)
-    y_pred = model.predict(X_test)
-
-
-    if hasattr(model, "predict_proba"):
-          y_prob = model.predict_proba(X_test)[:, 1]
-    else:
-         y_prob= y_pred
-
+    fpr, tpr, _ = roc_curve(y, y_prob)
     results[name] = {
-        "model": model,
-        "accuracy": accuracy_score(y_test, y_pred),
-        "precision": precision_score(y_test, y_pred),
-        "recall": recall_score(y_test, y_pred),
-        "confusion_matrix": confusion_matrix(y_test, y_pred),
-        "roc_auc": roc_auc_score(y_test, y_prob),
-        "fpr": roc_curve(y_test, y_prob)[0],
-        "tpr": roc_curve(y_test, y_prob)[1]
+        "accuracy": accuracy_score(y, y_pred),
+        "precision": precision_score(y, y_pred),
+        "recall": recall_score(y, y_pred),
+        "f1": f1_score(y, y_pred),
+        "roc_auc": roc_auc_score(y, y_prob),
+        "confusion_matrix": confusion_matrix(y, y_pred),
+        "fpr": fpr,
+        "tpr": tpr,
     }
 
 
-# Step 8: Summary Table
+# Step 7: Summary Table
 summary_df = pd.DataFrame([
     {
         "Model": name,
         "Accuracy": res["accuracy"],
         "Precision": res["precision"],
         "Recall": res["recall"],
-        "ROC AUC": res["roc_auc"]
+        "F1": res["f1"],
+        "ROC AUC": res["roc_auc"],
     }
     for name, res in results.items()
-])
-print("\n                                   Model Evaluation Summary")
-print(summary_df)
+]).sort_values("ROC AUC", ascending=False).reset_index(drop=True)
+
+baseline = max(y.mean(), 1 - y.mean())
+print("\n                          Model Evaluation Summary (5-fold CV)")
+print(summary_df.to_string(index=False))
+print(f"\nBaseline accuracy (always predict the majority class): {baseline:.3f}")
 
 
-
-# Step 9: Accuracy Bar-Chart Representation
+# Step 8: Accuracy Bar-Chart Representation
 plt.figure(figsize=(8, 5))
 sns.barplot(x="Model", y="Accuracy", data=summary_df)
 plt.title("Model Accuracy Comparison")
+plt.axhline(baseline, color="red", linestyle="--", label=f"Baseline ({baseline:.2f})")
+plt.legend()
+plt.xticks(rotation=15)
 plt.tight_layout()
 plt.savefig(os.path.join(FIGURES_DIR, "03_model_accuracy.png"), dpi=150)
 plt.show()
 
 
-
-# Step 10: Precision & Recall Bar-Chart Representation
-summary_melted = pd.melt(summary_df, id_vars="Model", value_vars=["Precision", "Recall"])
-plt.figure(figsize=(8, 5))
+# Step 9: Precision / Recall / F1 Bar-Chart Representation
+summary_melted = pd.melt(summary_df, id_vars="Model",
+                         value_vars=["Precision", "Recall", "F1"])
+plt.figure(figsize=(9, 5))
 sns.barplot(x="Model", y="value", hue="variable", data=summary_melted)
-plt.title("Precision vs Recall by Model")
+plt.title("Precision / Recall / F1 by Model")
+plt.ylabel("Score")
+plt.xticks(rotation=15)
 plt.tight_layout()
 plt.savefig(os.path.join(FIGURES_DIR, "04_precision_recall.png"), dpi=150)
 plt.show()
 
-# Step 11: Confusion Matrices Diagram
+
+# Step 10: Confusion Matrices Diagram
 for name, res in results.items():
     plt.figure(figsize=(5, 4))
-    sns.heatmap(res["confusion_matrix"], annot=True, fmt="d", cmap="Blues")
+    sns.heatmap(res["confusion_matrix"], annot=True, fmt="d", cmap="Blues",
+                xticklabels=["Rejected", "Approved"],
+                yticklabels=["Rejected", "Approved"])
     plt.title(f"Confusion Matrix - {name}")
     plt.xlabel("Predicted")
     plt.ylabel("Actual")
@@ -170,12 +192,11 @@ for name, res in results.items():
     plt.show()
 
 
-
-# Step 12: ROC Curve Comparison Graph
+# Step 11: ROC Curve Comparison Graph
 plt.figure(figsize=(10, 8))
 for name, res in results.items():
     plt.plot(res["fpr"], res["tpr"], label=f"{name} (AUC = {res['roc_auc']:.2f})")
-plt.plot([0, 1], [0, 1], 'k--')
+plt.plot([0, 1], [0, 1], "k--")
 plt.title("ROC Curve Comparison")
 plt.xlabel("False Positive Rate")
 plt.ylabel("True Positive Rate")
