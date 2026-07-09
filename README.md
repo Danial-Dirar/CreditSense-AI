@@ -1,9 +1,27 @@
-# 🏦 AI-Powered Loan Approval Prediction System
+<p align="center">
+  <img src="assets/logo.svg" alt="CreditSense AI" width="620">
+</p>
 
-![Python](https://img.shields.io/badge/Python-3.8%2B-blue)
-![Scikit-Learn](https://img.shields.io/badge/Library-Scikit--Learn-orange)
-![Pandas](https://img.shields.io/badge/Data-Pandas-150458)
-![Status](https://img.shields.io/badge/Status-Completed-green)
+<h1 align="center">AI-Powered Loan Approval Prediction System</h1>
+
+<p align="center">
+  <img src="https://img.shields.io/badge/Python-3.8%2B-blue?logo=python&logoColor=white" alt="Python">
+  <img src="https://img.shields.io/badge/scikit--learn-ML-orange?logo=scikitlearn&logoColor=white" alt="scikit-learn">
+  <img src="https://img.shields.io/badge/pandas-Data-150458?logo=pandas&logoColor=white" alt="pandas">
+  <img src="https://img.shields.io/badge/NumPy-Arrays-013243?logo=numpy&logoColor=white" alt="NumPy">
+  <img src="https://img.shields.io/badge/seaborn%20%2F%20matplotlib-Viz-11557c" alt="Visualization">
+  <img src="https://img.shields.io/badge/Models-4-brightgreen" alt="Models">
+  <img src="https://img.shields.io/badge/Status-Completed-success" alt="Status">
+  <img src="https://img.shields.io/badge/License-MIT-yellow" alt="License">
+</p>
+
+<p align="center">
+  <a href="#-installation--usage">🚀 Getting Started</a> &nbsp;•&nbsp;
+  <a href="#%EF%B8%8F-pipeline-architecture">🏗️ Architecture</a> &nbsp;•&nbsp;
+  <a href="#-methodology">🧠 Methodology</a> &nbsp;•&nbsp;
+  <a href="#-results--visualizations">📈 Results</a> &nbsp;•&nbsp;
+  <a href="#-future-improvements">🔮 Roadmap</a>
+</p>
 
 ## 📄 Overview
 This project is a Machine Learning pipeline designed to automate the loan eligibility process. It analyzes applicant data to predict whether a loan should be **Approved** or **Rejected**. 
@@ -26,6 +44,14 @@ The system implements multiple classification algorithms to determine the most a
 * **Data Manipulation:** Pandas, NumPy
 * **Visualization:** Matplotlib, Seaborn
 * **Machine Learning:** Scikit-Learn (sklearn)
+
+## 🏗️ Pipeline Architecture
+
+The project runs as a single end-to-end pipeline — from the raw CSV all the way to saved evaluation figures:
+
+<p align="center">
+  <img src="assets/architecture.svg" alt="CreditSense AI pipeline architecture" width="100%">
+</p>
 
 ## 📂 Dataset
 The project relies on `Loan Approval Dataset.csv`. 
