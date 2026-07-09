@@ -1,5 +1,6 @@
 
 # importinggg
+import os
 import pandas as pd
 import numpy as np
 import seaborn as sns
@@ -20,6 +21,11 @@ from sklearn.neural_network import MLPClassifier
 
 
 
+# Create a folder to save all generated figures
+FIGURES_DIR = "figures"
+os.makedirs(FIGURES_DIR, exist_ok=True)
+
+
 # Step 1: Loading Dataset
 df = pd.read_csv("Loan Approval Dataset.csv")
 # plotting for checkk
@@ -30,6 +36,7 @@ plt.xlabel("Loan Status")
 plt.ylabel("Count")
 plt.xticks([0, 1], ["Rejected (0)", "Approved (1)"])
 plt.tight_layout()
+plt.savefig(os.path.join(FIGURES_DIR, "01_class_distribution.png"), dpi=150)
 plt.show()
 
 
@@ -55,6 +62,7 @@ plt.figure(figsize=(12, 8))
 sns.heatmap(df_imputed.corr(), annot=True, cmap='coolwarm')
 plt.title('Feature Correlation Heatmap')
 plt.tight_layout()
+plt.savefig(os.path.join(FIGURES_DIR, "02_correlation_heatmap.png"), dpi=150)
 plt.show()
 
 
@@ -135,6 +143,7 @@ plt.figure(figsize=(8, 5))
 sns.barplot(x="Model", y="Accuracy", data=summary_df)
 plt.title("Model Accuracy Comparison")
 plt.tight_layout()
+plt.savefig(os.path.join(FIGURES_DIR, "03_model_accuracy.png"), dpi=150)
 plt.show()
 
 
@@ -145,6 +154,7 @@ plt.figure(figsize=(8, 5))
 sns.barplot(x="Model", y="value", hue="variable", data=summary_melted)
 plt.title("Precision vs Recall by Model")
 plt.tight_layout()
+plt.savefig(os.path.join(FIGURES_DIR, "04_precision_recall.png"), dpi=150)
 plt.show()
 
 # Step 11: Confusion Matrices Diagram
@@ -155,6 +165,8 @@ for name, res in results.items():
     plt.xlabel("Predicted")
     plt.ylabel("Actual")
     plt.tight_layout()
+    safe_name = name.replace(" ", "_").lower()
+    plt.savefig(os.path.join(FIGURES_DIR, f"05_confusion_matrix_{safe_name}.png"), dpi=150)
     plt.show()
 
 
@@ -169,4 +181,5 @@ plt.xlabel("False Positive Rate")
 plt.ylabel("True Positive Rate")
 plt.legend()
 plt.tight_layout()
+plt.savefig(os.path.join(FIGURES_DIR, "06_roc_curve.png"), dpi=150)
 plt.show()

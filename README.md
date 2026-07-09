@@ -79,15 +79,18 @@ The models are ranked based on:
 
 ## 📈 Results & Visualizations
 
-Upon running the script, the following visualizations are generated:
+Running the script automatically creates a **`figures/`** folder and saves every plot there as a `.png` file (the plots are also displayed on screen). The generated figures are:
 
-1.  **Class Distribution:** Checks for dataset imbalance.
-2.  **Correlation Heatmap:** Identifies relationships between features.
-3.  **Model Comparison Bar Charts:** Visualizes Accuracy, Precision, and Recall side-by-side.
-4.  **Confusion Matrices:** Detailed breakdown of correct vs. incorrect predictions for each model.
-5.  **ROC Curve:** Compares the True Positive Rate vs. False Positive Rate for all models.
+| File | Description |
+| --- | --- |
+| `01_class_distribution.png` | **Class Distribution** — checks for dataset imbalance. |
+| `02_correlation_heatmap.png` | **Correlation Heatmap** — identifies relationships between features. |
+| `03_model_accuracy.png` | **Model Accuracy Comparison** — accuracy of all four models side-by-side. |
+| `04_precision_recall.png` | **Precision vs Recall** — precision and recall for each model. |
+| `05_confusion_matrix_<model>.png` | **Confusion Matrices** — one per model (KNN, Logistic Regression, Decision Tree, Neural Network). |
+| `06_roc_curve.png` | **ROC Curve Comparison** — True Positive Rate vs False Positive Rate for all models. |
 
-*(Note: You can add screenshots of your plots here after running the code)*
+> The `figures/` folder is created automatically on each run, so you don't need to make it manually.
 
 ## 🔮 Future Improvements
 * Implement Hyperparameter Tuning (GridSearchCV) to optimize model performance.
