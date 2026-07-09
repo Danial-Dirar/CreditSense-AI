@@ -24,7 +24,7 @@ from sklearn.neural_network import MLPClassifier
 df = pd.read_csv("Loan Approval Dataset.csv")
 # plotting for checkk
 plt.figure(figsize=(6, 4))
-sns.countplot(x="loan_status", data=df)
+sns.countplot(x="loan_status", data=df, order=["N", "Y"])
 plt.title("Class Distribution (Before Preprocessing)")
 plt.xlabel("Loan Status")
 plt.ylabel("Count")
@@ -34,7 +34,7 @@ plt.show()
 
 
 # Step 2: Handling Missing Values
-if str(df.isnull().values.any())!='np.False_':
+if df.isnull().values.any():
     imputer = SimpleImputer(strategy="most_frequent")
     df_imputed = pd.DataFrame(imputer.fit_transform(df), columns=df.columns)
 else:

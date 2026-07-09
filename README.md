@@ -36,18 +36,25 @@ The project relies on `Loan Approval Dataset.csv`.
 
 1.  **Clone the repository:**
     ```bash
-    git clone [https://github.com/your-username/loan-approval-ai.git](https://github.com/your-username/loan-approval-ai.git)
+    git clone https://github.com/Danial-Dirar/CreditSense-AI.git
+    cd CreditSense-AI
     ```
 
-2.  **Install dependencies:**
+2.  **(Recommended) Create a virtual environment:**
     ```bash
-    pip install pandas numpy seaborn matplotlib scikit-learn
+    python3 -m venv venv
+    source venv/bin/activate  # On Windows: venv\Scripts\activate
     ```
 
-3.  **Place your dataset:**
-    Ensure `Loan Approval Dataset.csv` is in the root directory.
+3.  **Install dependencies:**
+    ```bash
+    pip install -r requirements.txt
+    ```
 
-4.  **Run the script:**
+4.  **Place your dataset:**
+    Ensure `Loan Approval Dataset.csv` is in the root directory (it is already included in this repo).
+
+5.  **Run the script:**
     ```bash
     python main.py
     ```
@@ -89,6 +96,9 @@ Upon running the script, the following visualizations are generated:
 
 ## 🤝 Contributing
 Contributions are welcome! Please open an issue or submit a pull request for any improvements.
+
+## 🎓 Credits
+This project was originally built as a course submission for the Artificial Intelligence course, Section 5, by student IDs **24241314** and **22101931**. The main script was later renamed from `5_24241314_22101931.py` to `main.py` for clarity.
 
 ## 📜 License
 This project is open-source and available under the [MIT License](LICENSE).
