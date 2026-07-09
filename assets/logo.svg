@@ -1,41 +1,52 @@
 <svg width="820" height="220" viewBox="0 0 820 220" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="CreditSense AI">
   <defs>
     <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
-      <stop offset="0" stop-color="#0B1220"/>
-      <stop offset="1" stop-color="#132347"/>
+      <stop offset="0" stop-color="#071A33"/>
+      <stop offset="0.55" stop-color="#0A2647"/>
+      <stop offset="1" stop-color="#0C3252"/>
     </linearGradient>
-    <linearGradient id="ai" x1="0" y1="0" x2="1" y2="0">
-      <stop offset="0" stop-color="#34D399"/>
-      <stop offset="1" stop-color="#22D3EE"/>
+    <linearGradient id="gold" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#F7E7B0"/>
+      <stop offset="0.5" stop-color="#E4C15D"/>
+      <stop offset="1" stop-color="#BE9432"/>
     </linearGradient>
-    <radialGradient id="glow" cx="0.2" cy="0.2" r="0.9">
-      <stop offset="0" stop-color="#1D4ED8" stop-opacity="0.35"/>
-      <stop offset="1" stop-color="#1D4ED8" stop-opacity="0"/>
+    <linearGradient id="goldText" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#F5DE93"/>
+      <stop offset="1" stop-color="#CBA548"/>
+    </linearGradient>
+    <radialGradient id="glow" cx="0.18" cy="0.15" r="0.9">
+      <stop offset="0" stop-color="#1E5AA8" stop-opacity="0.35"/>
+      <stop offset="1" stop-color="#1E5AA8" stop-opacity="0"/>
     </radialGradient>
   </defs>
 
-  <!-- panel -->
+  <!-- panel + premium gold frame -->
   <rect x="0" y="0" width="820" height="220" rx="26" fill="url(#bg)"/>
   <rect x="0" y="0" width="820" height="220" rx="26" fill="url(#glow)"/>
+  <rect x="8" y="8" width="804" height="204" rx="20" fill="none" stroke="url(#gold)" stroke-width="1.5" opacity="0.55"/>
 
-  <!-- credit-score gauge icon -->
+  <!-- bank emblem -->
   <g>
-    <circle cx="130" cy="112" r="66" fill="#0E1B36" stroke="#243B66" stroke-width="1.5"/>
-    <!-- gauge arc: red -> amber -> green -->
-    <path d="M100.3 141.7 A42 42 0 0 1 100.3 82.3" fill="none" stroke="#F87171" stroke-width="10" stroke-linecap="round"/>
-    <path d="M100.3 82.3 A42 42 0 0 1 159.7 82.3" fill="none" stroke="#FBBF24" stroke-width="10" stroke-linecap="round"/>
-    <path d="M159.7 82.3 A42 42 0 0 1 159.7 141.7" fill="none" stroke="#34D399" stroke-width="10" stroke-linecap="round"/>
-    <!-- needle pointing to the green (high-score / approved) zone -->
-    <line x1="130" y1="112" x2="161.2" y2="94" stroke="#E2E8F0" stroke-width="4" stroke-linecap="round"/>
-    <circle cx="130" cy="112" r="6" fill="#E2E8F0"/>
-    <!-- small AI node accents -->
-    <circle cx="176" cy="70" r="4" fill="#22D3EE"/>
-    <circle cx="150" cy="52" r="3" fill="#34D399"/>
-    <line x1="150" y1="52" x2="176" y2="70" stroke="#22D3EE" stroke-width="1.5" opacity="0.6"/>
+    <circle cx="130" cy="112" r="66" fill="#061529" stroke="url(#gold)" stroke-width="2"/>
+    <g fill="url(#gold)">
+      <!-- pediment -->
+      <polygon points="130,72 94,93 166,93"/>
+      <!-- architrave -->
+      <rect x="94" y="95" width="72" height="7" rx="1.5"/>
+      <!-- columns -->
+      <rect x="98"  y="105" width="9" height="33" rx="1.5"/>
+      <rect x="116" y="105" width="9" height="33" rx="1.5"/>
+      <rect x="135" y="105" width="9" height="33" rx="1.5"/>
+      <rect x="153" y="105" width="9" height="33" rx="1.5"/>
+      <!-- steps / base -->
+      <rect x="92" y="140" width="76" height="6" rx="1.5"/>
+      <rect x="87" y="147" width="86" height="7" rx="2"/>
+    </g>
   </g>
 
   <!-- wordmark -->
-  <text x="228" y="108" font-family="Segoe UI, Helvetica, Arial, sans-serif" font-size="52" font-weight="700" fill="#F8FAFC">Credit<tspan fill="#F8FAFC">Sense</tspan><tspan fill="url(#ai)" font-weight="800"> AI</tspan></text>
-  <text x="230" y="150" font-family="Segoe UI, Helvetica, Arial, sans-serif" font-size="21" font-weight="400" fill="#94A3B8">Machine-Learning Loan Approval Prediction</text>
-  <text x="231" y="180" font-family="Segoe UI, Helvetica, Arial, sans-serif" font-size="14" font-weight="500" letter-spacing="2" fill="#475569">KNN · LOGISTIC REGRESSION · DECISION TREE · NEURAL NET</text>
+  <text x="228" y="106" font-family="Georgia, 'Times New Roman', serif" font-size="52" font-weight="700" fill="#F4ECD8">Credit<tspan fill="#F4ECD8">Sense</tspan><tspan fill="url(#goldText)"> AI</tspan></text>
+  <line x1="230" y1="122" x2="470" y2="122" stroke="url(#gold)" stroke-width="1.5" opacity="0.6"/>
+  <text x="230" y="150" font-family="Segoe UI, Helvetica, Arial, sans-serif" font-size="20" font-weight="400" fill="#B9C6D9">Machine-Learning Loan Approval Prediction</text>
+  <text x="231" y="180" font-family="Segoe UI, Helvetica, Arial, sans-serif" font-size="13.5" font-weight="500" letter-spacing="2.2" fill="#8A7A4E">KNN · LOGISTIC REGRESSION · DECISION TREE · NEURAL NET</text>
 </svg>

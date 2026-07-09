@@ -1,63 +1,86 @@
 <svg width="1040" height="300" viewBox="0 0 1040 300" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="CreditSense AI pipeline architecture">
   <defs>
     <linearGradient id="pbg" x1="0" y1="0" x2="1" y2="1">
-      <stop offset="0" stop-color="#0B1220"/>
-      <stop offset="1" stop-color="#132347"/>
+      <stop offset="0" stop-color="#071A33"/>
+      <stop offset="0.55" stop-color="#0A2647"/>
+      <stop offset="1" stop-color="#0C3252"/>
+    </linearGradient>
+    <linearGradient id="gold" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#F7E7B0"/>
+      <stop offset="0.5" stop-color="#E4C15D"/>
+      <stop offset="1" stop-color="#BE9432"/>
+    </linearGradient>
+    <linearGradient id="goldText" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#F5DE93"/>
+      <stop offset="1" stop-color="#CBA548"/>
     </linearGradient>
   </defs>
 
   <rect x="0" y="0" width="1040" height="300" rx="24" fill="url(#pbg)"/>
-  <text x="34" y="52" font-family="Segoe UI, Helvetica, Arial, sans-serif" font-size="22" font-weight="700" fill="#F8FAFC">ML Pipeline Architecture</text>
-  <text x="34" y="76" font-family="Segoe UI, Helvetica, Arial, sans-serif" font-size="13" fill="#94A3B8">From raw applicant data to model evaluation &amp; visualizations</text>
+  <rect x="8" y="8" width="1024" height="284" rx="18" fill="none" stroke="url(#gold)" stroke-width="1.5" opacity="0.45"/>
 
-  <!-- cards -->
-  <!-- x positions: 30, 202, 374, 546, 718, 890  (width 140, y 118..214) -->
+  <text x="34" y="52" font-family="Georgia, 'Times New Roman', serif" font-size="23" font-weight="700" fill="#F4ECD8">ML Pipeline Architecture</text>
+  <text x="34" y="76" font-family="Segoe UI, Helvetica, Arial, sans-serif" font-size="13" fill="#B9C6D9">From raw applicant data to model evaluation &amp; visualizations</text>
+
+  <!-- cards: x = 30, 202, 374, 546, 718, 890 ; width 140 ; y 118..214 -->
   <g font-family="Segoe UI, Helvetica, Arial, sans-serif">
     <!-- 1 Dataset -->
-    <rect x="30" y="118" width="140" height="96" rx="14" fill="#151F36" stroke="#2A3B5E" stroke-width="1.5"/>
-    <circle cx="52" cy="140" r="7" fill="#60A5FA"/>
-    <text x="68" y="145" font-size="16" font-weight="700" fill="#F8FAFC">Dataset</text>
-    <text x="46" y="176" font-size="12" fill="#94A3B8">Loan Approval</text>
-    <text x="46" y="194" font-size="12" fill="#94A3B8">CSV</text>
+    <rect x="30" y="118" width="140" height="96" rx="14" fill="#0A2242" stroke="url(#gold)" stroke-width="1.2" opacity="0.98"/>
+    <rect x="30" y="118" width="5" height="96" rx="2.5" fill="url(#gold)"/>
+    <circle cx="58" cy="145" r="13" fill="url(#gold)"/>
+    <text x="58" y="150" text-anchor="middle" font-size="15" font-weight="800" fill="#0A2242">1</text>
+    <text x="80" y="150" font-size="16" font-weight="700" fill="#F4ECD8">Dataset</text>
+    <text x="46" y="180" font-size="12" fill="#B9C6D9">Loan Approval</text>
+    <text x="46" y="198" font-size="12" fill="#B9C6D9">CSV</text>
 
     <!-- 2 Preprocess -->
-    <rect x="202" y="118" width="140" height="96" rx="14" fill="#151F36" stroke="#2A3B5E" stroke-width="1.5"/>
-    <circle cx="224" cy="140" r="7" fill="#22D3EE"/>
-    <text x="240" y="145" font-size="16" font-weight="700" fill="#F8FAFC">Preprocess</text>
-    <text x="218" y="176" font-size="12" fill="#94A3B8">Impute +</text>
-    <text x="218" y="194" font-size="12" fill="#94A3B8">Label Encode</text>
+    <rect x="202" y="118" width="140" height="96" rx="14" fill="#0A2242" stroke="url(#gold)" stroke-width="1.2"/>
+    <rect x="202" y="118" width="5" height="96" rx="2.5" fill="url(#gold)"/>
+    <circle cx="230" cy="145" r="13" fill="url(#gold)"/>
+    <text x="230" y="150" text-anchor="middle" font-size="15" font-weight="800" fill="#0A2242">2</text>
+    <text x="252" y="150" font-size="16" font-weight="700" fill="#F4ECD8">Preprocess</text>
+    <text x="218" y="180" font-size="12" fill="#B9C6D9">Impute +</text>
+    <text x="218" y="198" font-size="12" fill="#B9C6D9">Label Encode</text>
 
     <!-- 3 Split -->
-    <rect x="374" y="118" width="140" height="96" rx="14" fill="#151F36" stroke="#2A3B5E" stroke-width="1.5"/>
-    <circle cx="396" cy="140" r="7" fill="#A78BFA"/>
-    <text x="412" y="145" font-size="16" font-weight="700" fill="#F8FAFC">Split</text>
-    <text x="390" y="176" font-size="12" fill="#94A3B8">70 / 30</text>
-    <text x="390" y="194" font-size="12" fill="#94A3B8">Stratified</text>
+    <rect x="374" y="118" width="140" height="96" rx="14" fill="#0A2242" stroke="url(#gold)" stroke-width="1.2"/>
+    <rect x="374" y="118" width="5" height="96" rx="2.5" fill="url(#gold)"/>
+    <circle cx="402" cy="145" r="13" fill="url(#gold)"/>
+    <text x="402" y="150" text-anchor="middle" font-size="15" font-weight="800" fill="#0A2242">3</text>
+    <text x="424" y="150" font-size="16" font-weight="700" fill="#F4ECD8">Split</text>
+    <text x="390" y="180" font-size="12" fill="#B9C6D9">70 / 30</text>
+    <text x="390" y="198" font-size="12" fill="#B9C6D9">Stratified</text>
 
     <!-- 4 Models -->
-    <rect x="546" y="118" width="140" height="96" rx="14" fill="#151F36" stroke="#2A3B5E" stroke-width="1.5"/>
-    <circle cx="568" cy="140" r="7" fill="#34D399"/>
-    <text x="584" y="145" font-size="16" font-weight="700" fill="#F8FAFC">Models</text>
-    <text x="562" y="176" font-size="12" fill="#94A3B8">KNN · LR</text>
-    <text x="562" y="194" font-size="12" fill="#94A3B8">DT · MLP</text>
+    <rect x="546" y="118" width="140" height="96" rx="14" fill="#0A2242" stroke="url(#gold)" stroke-width="1.2"/>
+    <rect x="546" y="118" width="5" height="96" rx="2.5" fill="url(#gold)"/>
+    <circle cx="574" cy="145" r="13" fill="url(#gold)"/>
+    <text x="574" y="150" text-anchor="middle" font-size="15" font-weight="800" fill="#0A2242">4</text>
+    <text x="596" y="150" font-size="16" font-weight="700" fill="#F4ECD8">Models</text>
+    <text x="562" y="180" font-size="12" fill="#B9C6D9">KNN · LR</text>
+    <text x="562" y="198" font-size="12" fill="#B9C6D9">DT · MLP</text>
 
     <!-- 5 Evaluate -->
-    <rect x="718" y="118" width="140" height="96" rx="14" fill="#151F36" stroke="#2A3B5E" stroke-width="1.5"/>
-    <circle cx="740" cy="140" r="7" fill="#FBBF24"/>
-    <text x="756" y="145" font-size="16" font-weight="700" fill="#F8FAFC">Evaluate</text>
-    <text x="734" y="176" font-size="12" fill="#94A3B8">Acc · Prec</text>
-    <text x="734" y="194" font-size="12" fill="#94A3B8">Recall · AUC</text>
+    <rect x="718" y="118" width="140" height="96" rx="14" fill="#0A2242" stroke="url(#gold)" stroke-width="1.2"/>
+    <rect x="718" y="118" width="5" height="96" rx="2.5" fill="url(#gold)"/>
+    <circle cx="746" cy="145" r="13" fill="url(#gold)"/>
+    <text x="746" y="150" text-anchor="middle" font-size="15" font-weight="800" fill="#0A2242">5</text>
+    <text x="768" y="150" font-size="16" font-weight="700" fill="#F4ECD8">Evaluate</text>
+    <text x="734" y="180" font-size="12" fill="#B9C6D9">Acc · Prec</text>
+    <text x="734" y="198" font-size="12" fill="#B9C6D9">Recall · AUC</text>
 
     <!-- 6 Visualize -->
-    <rect x="890" y="118" width="140" height="96" rx="14" fill="#151F36" stroke="#2A3B5E" stroke-width="1.5"/>
-    <circle cx="912" cy="140" r="7" fill="#F472B6"/>
-    <text x="928" y="145" font-size="16" font-weight="700" fill="#F8FAFC">Visualize</text>
-    <text x="906" y="176" font-size="12" fill="#94A3B8">figures/</text>
-    <text x="906" y="194" font-size="12" fill="#94A3B8">*.png</text>
+    <rect x="890" y="118" width="140" height="96" rx="14" fill="#0A2242" stroke="url(#gold)" stroke-width="1.2"/>
+    <rect x="890" y="118" width="5" height="96" rx="2.5" fill="url(#gold)"/>
+    <circle cx="918" cy="145" r="13" fill="url(#gold)"/>
+    <text x="918" y="150" text-anchor="middle" font-size="15" font-weight="800" fill="#0A2242">6</text>
+    <text x="940" y="150" font-size="16" font-weight="700" fill="#F4ECD8">Visualize</text>
+    <text x="906" y="180" font-size="12" fill="#B9C6D9">figures/</text>
+    <text x="906" y="198" font-size="12" fill="#B9C6D9">*.png</text>
   </g>
 
-  <!-- arrows between cards (y = 166) -->
-  <g stroke="#64748B" stroke-width="2.5" fill="#64748B">
+  <!-- gold arrows between cards (y = 166) -->
+  <g stroke="url(#gold)" stroke-width="2.5" fill="url(#gold)">
     <line x1="172" y1="166" x2="196" y2="166"/><polygon points="196,161 206,166 196,171"/>
     <line x1="344" y1="166" x2="368" y2="166"/><polygon points="368,161 378,166 368,171"/>
     <line x1="516" y1="166" x2="540" y2="166"/><polygon points="540,161 550,166 540,171"/>
@@ -65,6 +88,5 @@
     <line x1="860" y1="166" x2="884" y2="166"/><polygon points="884,161 894,166 884,171"/>
   </g>
 
-  <!-- scaling annotation under Models -->
-  <text x="616" y="240" text-anchor="middle" font-family="Segoe UI, Helvetica, Arial, sans-serif" font-size="11" fill="#475569">MinMaxScaler → KNN  ·  StandardScaler → others</text>
+  <text x="616" y="244" text-anchor="middle" font-family="Segoe UI, Helvetica, Arial, sans-serif" font-size="11" fill="#8A7A4E">MinMaxScaler → KNN  ·  StandardScaler → others</text>
 </svg>
